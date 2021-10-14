@@ -10,14 +10,25 @@ export class MyComponent {
   @State() images: string[]
   @State() imageUrls: string[]
 
-  componentDidLoad() {
+  async componentDidLoad() {
     let urlList = `https://dog.ceo/api/breeds/list/all`;
 
     // Retrieve the list of breeds through the Dog CEO api and fill the {images} array with the list.
-    fetch(urlList).then(response => {
-      response.json().then(json => {
-        this.images = Object.keys(json.message);
-      });
+
+    await fetch(urlList).then((response) => {
+      if (response.status >= 200 && response.status <= 299) {
+        return response.json();
+      } else {
+        throw Error(response.statusText);
+      }
+    })
+    .then((jsonResponse) => {
+    // Work with the jasonResponse
+      this.images = Object.keys(jsonResponse.message);
+    }).catch((error) => {
+    // Handle the error
+      alert("Error retrieving Dog API list of breeds: " + error);
+      console.log(error);
     });
 
     //getImageUrls() does not update {imageUrls} unless imageUrls has been initialized first. The element {imageUrls[0]} will be ignored.
@@ -41,11 +52,25 @@ export class MyComponent {
   async getImageUrls(){
     for(let i = 0; i< this.images.length-1; i++){
       let urlImages = `https://dog.ceo/api/breed/${this.images[i]}/images/random`;
-      await fetch(urlImages).then(response => {
-        response.json().then(json => {
-          this.imageUrls=[...this.imageUrls, json.message];
-        });
-      });
+      await fetch(urlImages).then((response) => {
+        if (response.status >= 200 && response.status <= 299) {
+          return response.json();
+        } else {
+          throw Error(response.statusText);
+        }
+      })
+      .then((jsonResponse) => {
+      // Work with the jasonResponse
+        this.imageUrls=[...this.imageUrls, jsonResponse.message];
+      })
+      // catch(error) return the error "Error retrieving images from the Dog API: TypeError: Load failed"
+      // although the images load correctly. This part of error handling is commented out until the issue is fixed.
+
+      /*     .catch((error) => {
+            // Handle the error
+              alert("Error retrieving images from the Dog API: " + error);
+            }
+      */
     }
   }
 }

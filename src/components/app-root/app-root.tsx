@@ -10,7 +10,7 @@ export class AppRoot {
     return (
       <div>
         <header>
-          <h1>Dog Lover App</h1>
+          <h1>Dog Pics App</h1>
           <a href="/profile/stencil" class = "button">Profile Page</a>
         </header>
 
