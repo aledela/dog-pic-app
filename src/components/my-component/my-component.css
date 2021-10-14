@@ -1,0 +1,24 @@
+:host {
+  display: block;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-size: 1.2rem;
+}
+ul {
+   list-style-type: none;
+}
+a {
+  text-decoration: none;
+  color: #000;
+}
+li{
+  padding: 5px;
+}
+li:hover {
+transform: scale(1.2);
+background-color: rgba(236,236,25,0.6);
+
+}
